@@ -1,0 +1,30 @@
+[alias] diff = diff --ignore-space-change
+
+# ide & user specific files
+**/.idea
+**/.vscode
+**/*.iml
+
+# specifically ignored things go here
+**/_ignored
+
+# build artifacts (may want to comment these out project-by-project)
+**/build/
+
+# dev artifacts
+node_modules
+
+# pernicious npm blocker
+**/package-lock.json
+
+# os specific meta files
+**/Thumbs.db
+**/.DS_Store
+
+# external disk files
+**/.Spotlight*
+**/.Trashes
+
+# Optional npm cache directory
+**/.npm
+
