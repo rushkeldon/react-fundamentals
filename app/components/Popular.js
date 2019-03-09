@@ -4,42 +4,50 @@ import api from "../utils/api"
 import RepoGrid from "./RepoGrid"
 import Loading from "./Loading"
 
-let Popular = ( props ) => ( {
+const CN = "Popular";
+const popular = {
         state : {
             selectedLanguage : 'All',
             repos : []
         },
         setState : ( updater, callback ) => {
-            Object.assign( Popular.state, updater() );
+            console.log( CN + '.setState' );
+
+            Object.assign( popular.state, updater() );
         },
         componentDidMount : () => {
-            console.log( 'Popular.componentDidMount' );
-            Popular.updateLanguage( Popular.state.selectedLanguage );
+            console.log( CN + '.componentDidMount' );
+
+            popular.updateLanguage( popular.state.selectedLanguage );
         },
         updateLanguage : ( newLang ) => {
-            Popular.setState( () => ( { selectedLanguage : newLang, repos : [] } ) );
-            Popular.getRepos( newLang );
+            console.log( CN + '.updateLanguage' );
+
+            popular.setState( () => ( { selectedLanguage : newLang, repos : [] } ) );
+            popular.getRepos( newLang );
         },
         getRepos : ( newLang ) => {
+            console.log( CN + '.getRepos' );
+
             api.fetchPopularRepos( newLang )
                 .then( ( repos ) => {
-                    Popular.setState( () => ( { repos : repos } ) );
+                    popular.setState( () => ( { repos : repos } ) );
                 } );
         },
         render : () => {
-            console.log( 'Popular.render' );
-            console.log( Popular.state );
+            console.log( CN + '.render' );
             return(
                 <div>
                     <LanguageSelector
-                        selectedLanguage = { Popular.state.selectedLanguage }
-                        onSelect = { ( lang ) => Popular.updateLanguage( lang ) }/>
-                    { Popular.state.repos.length ? <RepoGrid repos = { Popular.state.repos }/> : <Loading/> }
+                        selectedLanguage = { popular.state.selectedLanguage }
+                        onSelect = { ( lang ) => popular.updateLanguage( lang ) }/>
+                    { popular.state.repos.length ? <RepoGrid repos = { popular.state.repos }/> : <Loading/> }
                 </div>
             )
         }
-    }
-)
+    };
+
+const Popular = () => popular;
 
 export default Popular;
 
