@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types"
 
 class LanguageSelector extends React.Component {
     constructor( props ) {
@@ -27,10 +26,5 @@ class LanguageSelector extends React.Component {
         )
     }
 }
-
-LanguageSelector.propTypes = {
-    selectedLanguage : PropTypes.string.isRequired,
-    onSelect : PropTypes.func.isRequired
-};
 
 export default LanguageSelector;

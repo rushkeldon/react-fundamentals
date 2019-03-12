@@ -4,7 +4,6 @@ import api from "../utils/api"
 import RepoGrid from "./RepoGrid"
 import Loading from "./Loading"
 
-
 const Popular = ( props ) => {
     const [ selectedLanguage, setLanguage ] = useState( 'All' );
     const [ repos, setRepos ] = useState( [] );
@@ -24,10 +23,7 @@ const Popular = ( props ) => {
             } );
     };
 
-    useEffect( () => {
-        getRepos( selectedLanguage );
-        // passing empty array as second param turns useEffect into a run-once-at-start callback
-    }, [] );
+    useEffect( () => { getRepos( selectedLanguage ); }, [] );
 
     return (
         <div>
