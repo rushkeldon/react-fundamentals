@@ -1,53 +1,42 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import LanguageSelector from "./LanguageSelector"
 import api from "../utils/api"
 import RepoGrid from "./RepoGrid"
 import Loading from "./Loading"
 
-const CN = "Popular";
-const popular = {
-        state : {
-            selectedLanguage : 'All',
-            repos : []
-        },
-        setState : ( updater, callback ) => {
-            console.log( CN + '.setState' );
 
-            Object.assign( popular.state, updater() );
-        },
-        componentDidMount : () => {
-            console.log( CN + '.componentDidMount' );
+const Popular = ( props ) => {
+    const [ selectedLanguage, setLanguage ] = useState( 'All' );
+    const [ repos, setRepos ] = useState( [] );
 
-            popular.updateLanguage( popular.state.selectedLanguage );
-        },
-        updateLanguage : ( newLang ) => {
-            console.log( CN + '.updateLanguage' );
-
-            popular.setState( () => ( { selectedLanguage : newLang, repos : [] } ) );
-            popular.getRepos( newLang );
-        },
-        getRepos : ( newLang ) => {
-            console.log( CN + '.getRepos' );
-
-            api.fetchPopularRepos( newLang )
-                .then( ( repos ) => {
-                    popular.setState( () => ( { repos : repos } ) );
-                } );
-        },
-        render : () => {
-            console.log( CN + '.render' );
-            return(
-                <div>
-                    <LanguageSelector
-                        selectedLanguage = { popular.state.selectedLanguage }
-                        onSelect = { ( lang ) => popular.updateLanguage( lang ) }/>
-                    { popular.state.repos.length ? <RepoGrid repos = { popular.state.repos }/> : <Loading/> }
-                </div>
-            )
-        }
+    const updateLanguage = ( newLang ) => {
+        setLanguage( newLang );
+        getRepos( newLang );
     };
 
-const Popular = () => popular;
+    const getRepos = ( newLang ) => {
+        api.fetchPopularRepos( newLang )
+            .then( ( repos ) => {
+                setRepos( repos );
+            } )
+            .catch( ( err ) => {
+                setRepos( [] );
+            } );
+    };
+
+    useEffect( () => {
+        getRepos( selectedLanguage );
+        // passing empty array as second param turns useEffect into a run-once-at-start callback
+    }, [] );
+
+    return (
+        <div>
+            <LanguageSelector
+                selectedLanguage = { selectedLanguage }
+                onSelect = { ( lang ) => updateLanguage( lang ) } />
+            { repos.length ? <RepoGrid repos = { repos } /> : <Loading/> }
+        </div>
+    )
+}
 
 export default Popular;
-
