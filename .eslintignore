@@ -1,5 +1,0 @@
-node_modules/*
-**/vendor/*.js
-dist
-# specifically ignored things go here
-**/_ignored
